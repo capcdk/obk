@@ -35,48 +35,50 @@ class ObkHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          Positioned(
-            top: 130,
-            left: 113,
+          Container(
+            margin: EdgeInsets.only(top: 280),
             child: Text(
               '开始记账吧',
               style: TextStyle(
-                  fontSize: 35,
+                  fontSize: 70,
                   color: Colors.black,
                   fontWeight: FontWeight.w600),
             ),
           ),
-          Positioned(
-            left: 38,
-            bottom: 60,
-            height: 56,
-            width: 120,
-            child: OutlineButton(
-              child: Text("记收入"),
-              borderSide: new BorderSide(color: Colors.blue),
-              color: Colors.white,
-              textColor: Colors.blue,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28.0)),
-              onPressed: () => Navigator.pushNamed(context, "book_keeping"),
-            ),
-          ),
-          Positioned(
-            right: 38,
-            bottom: 60,
-            height: 56,
-            width: 120,
-            child: FlatButton(
-              child: Text("记支出"),
-              color: Colors.blue,
-              highlightColor: Colors.blue[700],
-              textColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28.0)),
-              onPressed: () => Navigator.pushNamed(context, "book_keeping"),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 800, right: 100),
+                width: 190,
+                height: 90,
+                child: OutlineButton(
+                  child: Text("记收入", style: TextStyle(fontSize: 30)),
+                  borderSide: new BorderSide(color: Colors.blue),
+                  color: Colors.white,
+                  textColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28.0)),
+                  onPressed: () => Navigator.pushNamed(context, "book_keeping"),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 800, left: 100),
+                width: 190,
+                height: 90,
+                child: FlatButton(
+                  child: Text("记支出", style: TextStyle(fontSize: 30)),
+                  color: Colors.blue,
+                  highlightColor: Colors.blue[700],
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28.0)),
+                  onPressed: () => Navigator.pushNamed(context, "book_keeping"),
+                ),
+              )
+            ],
           )
         ],
       ),
