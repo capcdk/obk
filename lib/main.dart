@@ -3,8 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:obk/BookKeeping.dart';
 
 void main() {
-  debugPaintSizeEnabled = true;
-  debugPaintPointersEnabled = true;
+//  debugPaintSizeEnabled = true;
+//  debugPaintPointersEnabled = true;
   runApp(MyApp());
 }
 
@@ -41,10 +41,7 @@ class ObkHomePage extends StatelessWidget {
             margin: EdgeInsets.only(top: 280),
             child: Text(
               '开始记账吧',
-              style: TextStyle(
-                  fontSize: 70,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 70, color: Colors.black, fontWeight: FontWeight.w600),
             ),
           ),
           Row(
@@ -59,8 +56,7 @@ class ObkHomePage extends StatelessWidget {
                   borderSide: new BorderSide(color: Colors.blue),
                   color: Colors.white,
                   textColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28.0)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60.0)),
                   onPressed: () => Navigator.pushNamed(context, "book_keeping"),
                 ),
               ),
@@ -73,8 +69,7 @@ class ObkHomePage extends StatelessWidget {
                   color: Colors.blue,
                   highlightColor: Colors.blue[700],
                   textColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28.0)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60.0)),
                   onPressed: () => Navigator.pushNamed(context, "book_keeping"),
                 ),
               )
