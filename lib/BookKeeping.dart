@@ -131,6 +131,7 @@ class _CategoryState extends State<CategorySlidePicker> {
     _Category(),
     _Category()
   ];
+  int _categoryCnt = 8;
   final emptyCategoryPadding = 3;
   ScrollController _controller;
   bool isScrollEndNotification = false;
@@ -166,15 +167,15 @@ class _CategoryState extends State<CategorySlidePicker> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final double singleItemWidth = _calItemWidth(screenWidth: screenWidth);
-    var lent = _categoryList.length;
 
     return Container(
         width: screenWidth,
         child: NotificationListener<ScrollNotification>(
             child: ListView.builder(
-                itemCount: lent,
+                itemCount: _categoryList.length,
                 itemExtent: singleItemWidth,
                 scrollDirection: Axis.horizontal,
+                physics: BouncingScrollPhysics(),
                 controller: _controller,
                 itemBuilder: (BuildContext context, int index) => _categoryItem(index, singleItemWidth)),
             onNotification: (ScrollNotification notification) {
@@ -188,34 +189,35 @@ class _CategoryState extends State<CategorySlidePicker> {
                 if (currentLocation != _lastUpdateLocation) {
                   print("update=$currentLocation, start=$_startLocation");
 
-                  bool forward = currentLocation >= _lastUpdateLocation;
                   // 计算新分类的下标
                   int newCurrentCategoryIndex = currentLocation ~/ singleItemWidth;
-                  var newCurrentStandardOffset = _calStandCategoryOffset(newCurrentCategoryIndex, singleItemWidth);
-                  var newCurrentCategory = _categoryList[newCurrentCategoryIndex + emptyCategoryPadding];
-                  bool isLeftSide = currentLocation < newCurrentStandardOffset;
+                  if (newCurrentCategoryIndex >= 0 && newCurrentCategoryIndex <= _categoryCnt - 1) {
+                    var newCurrentStandardOffset = _calStandCategoryOffset(newCurrentCategoryIndex, singleItemWidth);
+                    var newCurrentCategory = _categoryList[newCurrentCategoryIndex + emptyCategoryPadding];
+                    bool isLeftSide = currentLocation < newCurrentStandardOffset;
 
-                  var asideCategoryIndex = newCurrentCategoryIndex + (isLeftSide ? -1 : 1);
-                  var asideCategory = _categoryList[asideCategoryIndex + emptyCategoryPadding];
+                    var asideCategoryIndex = newCurrentCategoryIndex + (isLeftSide ? -1 : 1);
+                    var asideCategory = _categoryList[asideCategoryIndex + emptyCategoryPadding];
 
-                  // 计算控件大小偏移
-                  var offsetScale = (currentLocation - newCurrentStandardOffset).abs() / singleItemWidth;
-                  print(
-                      "scale: offsetScale=$offsetScale, current=$_currentSelectCategoryIndex, newCurrent=$newCurrentCategoryIndex, aside=$asideCategoryIndex, ");
-                  setState(() {
-                    // 当前控件缩小
-                    newCurrentCategory.scale(1 - offsetScale);
-                    // 趋向的控件放大
-                    asideCategory.scale(offsetScale);
+                    // 计算控件大小偏移
+                    var offsetScale = (currentLocation - newCurrentStandardOffset).abs() / singleItemWidth;
+                    print(
+                        "scale: offsetScale=$offsetScale, current=$_currentSelectCategoryIndex, newCurrent=$newCurrentCategoryIndex, aside=$asideCategoryIndex, ");
+                    setState(() {
+                      // 当前控件缩小
+                      newCurrentCategory.scale(1 - offsetScale);
+                      // 趋向的控件放大
+                      asideCategory.scale(offsetScale);
 
-                    if (newCurrentCategoryIndex != _currentSelectCategoryIndex) {
-                      var oldCurrentCategory = _categoryList[_currentSelectCategoryIndex + emptyCategoryPadding];
-                      oldCurrentCategory.picked = false;
-                      oldCurrentCategory.scale(0);
-                      _categoryList[newCurrentCategoryIndex + emptyCategoryPadding].picked = true;
-                      _currentSelectCategoryIndex = newCurrentCategoryIndex;
-                    }
-                  });
+                      if (newCurrentCategoryIndex != _currentSelectCategoryIndex) {
+                        var oldCurrentCategory = _categoryList[_currentSelectCategoryIndex + emptyCategoryPadding];
+                        oldCurrentCategory.picked = false;
+                        oldCurrentCategory.scale(0);
+                        _categoryList[newCurrentCategoryIndex + emptyCategoryPadding].picked = true;
+                        _currentSelectCategoryIndex = newCurrentCategoryIndex;
+                      }
+                    });
+                  }
                 }
                 _lastUpdateLocation = currentLocation;
               }
@@ -227,13 +229,17 @@ class _CategoryState extends State<CategorySlidePicker> {
                   return true;
                 }
                 var jumpOffset = _calStandCategoryOffset(_currentSelectCategoryIndex, singleItemWidth);
-                _controller.jumpTo(jumpOffset);
+                _controller.animateTo(jumpOffset, duration: const Duration(milliseconds: 100), curve: Curves.ease);
+                setState(() {
+                  _categoryList[_currentSelectCategoryIndex + emptyCategoryPadding].scale(1);
+                });
                 print("jumpToOffset=$jumpOffset");
               }
               return true;
             }));
   }
 
+  // 创建分类项组件
   Widget _categoryItem(int itemIndex, double itemWidth) {
     _Category category = _categoryList[itemIndex];
     if (category.name.isEmpty) {
