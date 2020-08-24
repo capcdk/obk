@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:obk/BookKeeping.dart';
+import 'file:///D:/code/github/obk/lib/page/book_keeping.dart';
 
 void main() {
 //  debugPaintSizeEnabled = true;
@@ -34,6 +34,8 @@ class ObkHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Column(
         children: [
@@ -48,7 +50,7 @@ class ObkHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.only(top: 800, right: 100),
+                margin: EdgeInsets.only(top: screenHeight * 0.55, right: screenWidth * 0.08),
                 width: 190,
                 height: 90,
                 child: OutlineButton(
@@ -61,7 +63,7 @@ class ObkHomePage extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 800, left: 100),
+                margin: EdgeInsets.only(top: screenHeight * 0.55, left: screenWidth * 0.08),
                 width: 190,
                 height: 90,
                 child: FlatButton(

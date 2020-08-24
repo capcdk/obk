@@ -1,68 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-class BookKeepingPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var controller = ScrollController();
-    controller.addListener(() {
-      print(controller.offset);
-    });
-    return Scaffold(
-      body: Column(
-        children: [
-          // TAB
-          Container(
-            margin: EdgeInsets.only(top: 200),
-            width: 260,
-            height: 70,
-            color: Colors.red,
-          ),
-          // 输入区
-          Container(
-            margin: EdgeInsets.only(top: 180),
-            width: 400,
-            height: 130,
-            child: TextField(
-              style: TextStyle(fontSize: 60),
-              cursorWidth: 6,
-              cursorColor: Colors.black,
-              autofocus: false,
-              maxLines: 1,
-              decoration: InputDecoration(
-                  hintText: " 请输入金额",
-                  hintStyle: TextStyle(fontSize: 60, color: Colors.grey),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey),
-                  ),
-                  prefixText: "￥",
-                  prefixStyle: TextStyle(fontSize: 60, fontWeight: FontWeight.w600)),
-            ),
-          ),
-          // 分类选择器
-          Container(
-            margin: EdgeInsets.only(top: 280),
-            height: 120,
-            child: CategorySlidePicker(),
-          ),
-          // 备注输入区
-          Container(
-            margin: EdgeInsets.only(top: 30),
-            height: 80,
-            color: Colors.brown,
-          ),
-          // 键盘
-          Expanded(
-            flex: 1,
-            child: Container(
-              color: Colors.green,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
+import 'package:obk/model/category.dart';
 
 class CategorySlidePicker extends StatefulWidget {
   final int defaultCategorySelectIndex;
@@ -73,63 +10,22 @@ class CategorySlidePicker extends StatefulWidget {
   State<StatefulWidget> createState() => _CategoryState();
 }
 
-class _Category {
-  final String name;
-  bool picked;
-  double padding = unselectedPadding;
-  double fontSize = unselectedFontSize;
-
-  static const double selectFontSize = 40.0;
-  static const double selectPadding = 0.0;
-
-  static const double unselectedFontSize = 25.0;
-  static const double unselectedPadding = 15.0;
-
-  static const scaleFontSize = selectFontSize - unselectedFontSize;
-  static const scalePadding = unselectedPadding - selectPadding;
-
-  _Category({this.name = "", this.picked = false});
-
-  void setPickStatus(bool picked) {
-    this.picked = picked;
-    if (picked) {
-      this.padding = selectPadding;
-      this.fontSize = selectFontSize;
-    } else {
-      this.padding = unselectedPadding;
-      this.fontSize = unselectedFontSize;
-    }
-  }
-
-  void scale(double scale) {
-    double newFontSize = unselectedFontSize + (scale * scaleFontSize);
-    double newPadding = unselectedPadding - (scale * scalePadding);
-
-    if (newFontSize >= unselectedFontSize && newFontSize <= selectFontSize) {
-      this.fontSize = newFontSize;
-    }
-    if (newPadding >= selectPadding && newPadding <= unselectedPadding) {
-      this.padding = newPadding;
-    }
-  }
-}
-
 class _CategoryState extends State<CategorySlidePicker> {
-  List<_Category> _categoryList = [
-    _Category(),
-    _Category(),
-    _Category(),
-    _Category(name: "其他"),
-    _Category(name: "日用"),
-    _Category(name: "餐饮"),
-    _Category(name: "贷款"),
-    _Category(name: "交通"),
-    _Category(name: "娱乐"),
-    _Category(name: "家用"),
-    _Category(name: "消费"),
-    _Category(),
-    _Category(),
-    _Category()
+  List<Category> _categoryList = [
+    Category(),
+    Category(),
+    Category(),
+    Category(name: "其他"),
+    Category(name: "日用"),
+    Category(name: "餐饮"),
+    Category(name: "贷款"),
+    Category(name: "交通"),
+    Category(name: "娱乐"),
+    Category(name: "家用"),
+    Category(name: "消费"),
+    Category(),
+    Category(),
+    Category()
   ];
   int _categoryCnt = 8;
   final emptyCategoryPadding = 3;
@@ -241,7 +137,7 @@ class _CategoryState extends State<CategorySlidePicker> {
 
   // 创建分类项组件
   Widget _categoryItem(int itemIndex, double itemWidth) {
-    _Category category = _categoryList[itemIndex];
+    Category category = _categoryList[itemIndex];
     if (category.name.isEmpty) {
       return SizedBox(width: itemWidth);
     }
