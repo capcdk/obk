@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'file:///D:/code/github/obk/lib/page/book_keeping.dart';
+import 'package:obk/utills/global_value.dart';
 
 void main() {
 //  debugPaintSizeEnabled = true;
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    var app = MaterialApp(
       title: 'Flutter Demo',
       initialRoute: "/",
       theme: ThemeData(
@@ -20,12 +21,9 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       //注册路由表
-      routes: {
-//        "new_page":(context) => NewRoute()
-        "/": (context) => ObkHomePage(),
-        "book_keeping": (context) => BookKeepingPage()
-      },
+      routes: {"/": (context) => ObkHomePage(), "book_keeping": (context) => BookKeepingPage()},
     );
+    return app;
   }
 }
 
@@ -34,6 +32,7 @@ class ObkHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Global.init(context);
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:obk/book_keeping/amout_keyboard.dart';
+import 'package:obk/book_keeping/amount_keyboard.dart';
 import 'package:obk/book_keeping/category_slide_picker.dart';
 
 class BookKeepingPage extends StatelessWidget {
@@ -33,9 +33,11 @@ class BookKeepingPage extends StatelessWidget {
           ),
           // 备注输入区
           Container(
-            margin: EdgeInsets.only(top: 30),
-            height: 80,
-            color: Colors.brown,
+            margin: EdgeInsets.only(top: screenHeight * 0.02),
+            padding: EdgeInsets.only(left: screenWidth * 0.05),
+            height: screenHeight * 0.06,
+            color: const Color.fromRGBO(39, 144, 255, 0.08),
+            child: Container(alignment: Alignment.centerLeft, child: _remarkTextField()),
           ),
           // 金额键盘
           Expanded(
@@ -46,6 +48,26 @@ class BookKeepingPage extends StatelessWidget {
     );
   }
 
+  /**
+   * 备注输入区
+   */
+  Widget _remarkTextField() {
+    return TextField(
+      style: TextStyle(fontSize: 28),
+      cursorWidth: 3,
+      maxLines: 1,
+      decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: "点击此处添加备注",
+          hintStyle: TextStyle(fontSize: 28, color: Colors.grey),
+          prefixText: "备注：",
+          prefixStyle: TextStyle(fontSize: 28, fontWeight: FontWeight.w400)),
+    );
+  }
+
+  /**
+   * 金额输入区
+   */
   Widget _amountTextField() {
     return TextField(
       style: TextStyle(fontSize: 60),

@@ -83,8 +83,6 @@ class _CategoryState extends State<CategorySlidePicker> {
               if (notification is ScrollUpdateNotification) {
                 var currentLocation = notification.metrics.pixels;
                 if (currentLocation != _lastUpdateLocation) {
-                  print("update=$currentLocation, start=$_startLocation");
-
                   // 计算新分类的下标
                   int newCurrentCategoryIndex = currentLocation ~/ singleItemWidth;
                   if (newCurrentCategoryIndex >= 0 && newCurrentCategoryIndex <= _categoryCnt - 1) {
@@ -97,8 +95,6 @@ class _CategoryState extends State<CategorySlidePicker> {
 
                     // 计算控件大小偏移
                     var offsetScale = (currentLocation - newCurrentStandardOffset).abs() / singleItemWidth;
-                    print(
-                        "scale: offsetScale=$offsetScale, current=$_currentSelectCategoryIndex, newCurrent=$newCurrentCategoryIndex, aside=$asideCategoryIndex, ");
                     setState(() {
                       // 当前控件缩小
                       newCurrentCategory.scale(1 - offsetScale);
@@ -119,7 +115,6 @@ class _CategoryState extends State<CategorySlidePicker> {
               }
               if (notification is ScrollEndNotification && !isScrollEndNotification) {
                 _endLocation = notification.metrics.pixels;
-                print("start=$_startLocation, end=$_endLocation");
                 isScrollEndNotification = true;
                 if (_endLocation == _startLocation) {
                   return true;
@@ -129,7 +124,6 @@ class _CategoryState extends State<CategorySlidePicker> {
                 setState(() {
                   _categoryList[_currentSelectCategoryIndex + emptyCategoryPadding].scale(1);
                 });
-                print("jumpToOffset=$jumpOffset");
               }
               return true;
             }));

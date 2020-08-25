@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:obk/utills/global_value.dart';
 
 class AmountKeyboard extends StatelessWidget {
   final List<Widget> _icons = [
@@ -19,7 +20,14 @@ class AmountKeyboard extends StatelessWidget {
     _createTextAmountButton("-"),
     _createTextAmountButton("."),
     _createTextAmountButton("0"),
-    Icon(Icons.backspace, color: Colors.black, size: 45),
+    FlatButton(
+        child: SizedBox(
+            width: Global.screenWidth * 0.12,
+            child: Image(
+              image: AssetImage("asserts/images/backspace.png"),
+              fit: BoxFit.fitWidth,
+            )),
+        onPressed: () {}),
     FlatButton(
         color: Colors.blue,
         textColor: Colors.white,
@@ -29,7 +37,7 @@ class AmountKeyboard extends StatelessWidget {
 
   static FlatButton _createTextAmountButton(String text) {
     return FlatButton(
-        child: Text(text, style: TextStyle(fontSize: 45, color: Colors.black, fontWeight: FontWeight.w400)), onPressed: () {});
+        child: Text(text, style: TextStyle(fontSize: 50, color: Colors.black, fontWeight: FontWeight.w400)), onPressed: () {});
   }
 
   static String _getTodayDate() {
@@ -39,9 +47,6 @@ class AmountKeyboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var screenHeight = MediaQuery.of(context).size.height;
-    var screenWidth = MediaQuery.of(context).size.width;
-
     return LayoutBuilder(builder: (context, constraints) {
 //      context为父级上下文biggest
       // 获取组件在父组件所能设置的最大高度
@@ -49,14 +54,13 @@ class AmountKeyboard extends StatelessWidget {
       // 获取父组件宽度
       var availableWidth = constraints.maxWidth;
 
-      return GridView.builder(
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, childAspectRatio: availableWidth / availableHeight //显示区域宽高相等
-                  ),
-          itemCount: 16,
-          itemBuilder: (context, index) {
-            return _icons[index];
-          });
+      return GridView(
+        padding: EdgeInsets.all(0),
+        gridDelegate:
+            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, childAspectRatio: availableWidth / availableHeight //显示区域宽高相等
+                ),
+        children: _icons,
+      );
     });
   }
 }
