@@ -17,7 +17,7 @@ class AmountKeyboard extends StatelessWidget {
     _createTextAmountButton("1"),
     _createTextAmountButton("2"),
     _createTextAmountButton("3"),
-    _createTextAmountButton("-"),
+    _createTextAmountButton("—"),
     _createTextAmountButton("."),
     _createTextAmountButton("0"),
     FlatButton(
