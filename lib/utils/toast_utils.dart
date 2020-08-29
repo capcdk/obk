@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:obk/utills/global_value.dart';
+import 'package:obk/utils/global_value.dart';
 
 class ToastUtils {
   static final FToast fToast = FToast(Global.appContext);

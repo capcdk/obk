@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'file:///D:/code/github/obk/lib/page/book_keeping.dart';
-import 'package:obk/utills/global_value.dart';
+import 'package:obk/utils/global_value.dart';
 
 void main() {
 //  debugPaintSizeEnabled = true;
@@ -78,11 +78,6 @@ class ObkHomePage extends StatelessWidget {
           )
         ],
       ),
-//      floatingActionButton: FloatingActionButton(
-//        onPressed: _incrementCounter,
-//        tooltip: 'Increment',
-//        child: Icon(Icons.add),
-//      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

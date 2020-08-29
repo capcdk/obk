@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:obk/book_keeping/amount_keyboard.dart';
 import 'package:obk/book_keeping/category_slide_picker.dart';
-import 'package:obk/utills/global_value.dart';
-import 'package:obk/utills/toast_utils.dart';
+import 'package:obk/utils/global_value.dart';
+import 'package:obk/utils/toast_utils.dart';
 
 class BookKeepingPage extends StatefulWidget {
   BookKeepingPage({Key key}) : super(key: key);
@@ -18,6 +18,7 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
   final TextEditingController _amountController = TextEditingController();
   bool needCalculate = false;
   bool amountNotEmpty = false;
+  bool chooseIncome = false;
 
   void onAmountInput(String input) {
     if (input.isEmpty) {
@@ -133,12 +134,7 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
       body: Column(
         children: [
           // TAB
-          Container(
-            margin: EdgeInsets.only(top: 200),
-            width: 260,
-            height: 70,
-            color: Colors.red,
-          ),
+          BillTypeChooser(this.chooseIncome),
           // 金额输入区
           Container(
             margin: EdgeInsets.only(top: 180),
@@ -169,9 +165,7 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
     );
   }
 
-  /**
-   * 备注输入区
-   */
+  /// 备注输入区
   Widget _remarkTextField() {
     return Row(children: [
       Text("备注：", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w100)),
@@ -186,18 +180,50 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
   }
 }
 
-// 金额输入控件
-class AmountTextField extends StatefulWidget {
-  AmountTextField(this.textController, {Key key}) : super(key: key);
+// 账单模式切换
+class BillTypeChooser extends StatelessWidget {
+  BillTypeChooser(this.chooseIncome, {Key key}) : super(key: key);
 
-  final textController;
+  final bool chooseIncome;
 
   @override
-  State<StatefulWidget> createState() => _AmountTextFieldState(textController);
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: Global.screenHeight * 0.09),
+      width: Global.screenWidth * 0.4053,
+      height: Global.screenWidth * 0.41 * 0.263,
+      decoration: BoxDecoration(
+        border: Border.all(color: const Color.fromRGBO(43, 146, 255, 0.3), width: 2),
+        borderRadius: BorderRadius.circular(60),
+      ),
+      child: Stack(
+        children: [
+          Positioned(left: 0, child: _createBillTypeButton(false)),
+          Positioned(right: 0, child: _createBillTypeButton(true)),
+        ],
+      ),
+    );
+  }
+
+  Widget _createBillTypeButton(bool incomeButton) {
+    return SizedBox(
+      height: Global.screenWidth * 0.4053 * 0.263,
+      width: Global.screenWidth * 0.208,
+      child: FlatButton(
+        child: Text(incomeButton ? "收入" : "支出", style: TextStyle(fontSize: 27, fontWeight: FontWeight.w600)),
+        color: (incomeButton == chooseIncome) ? Colors.blue : Colors.transparent,
+        textColor: (incomeButton == chooseIncome) ? Colors.white : Colors.black,
+        highlightColor: Colors.blue[700],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60.0)),
+        onPressed: (incomeButton == chooseIncome) ? () => {} : null,
+      ),
+    );
+  }
 }
 
-class _AmountTextFieldState extends State<AmountTextField> {
-  _AmountTextFieldState(this.textController) : super();
+// 金额输入控件
+class AmountTextField extends StatelessWidget {
+  AmountTextField(this.textController, {Key key}) : super(key: key);
 
   final textController;
 

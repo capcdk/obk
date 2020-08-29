@@ -4,7 +4,7 @@ import 'package:obk/model/category.dart';
 class CategorySlidePicker extends StatefulWidget {
   final int defaultCategorySelectIndex;
 
-  CategorySlidePicker({Key key, this.defaultCategorySelectIndex = 0}) : super(key: key);
+  CategorySlidePicker({Key key, this.defaultCategorySelectIndex = 2}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CategoryState();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:obk/utills/global_value.dart';
+import 'package:obk/utils/global_value.dart';
 
 class AmountKeyboard extends StatelessWidget {
   AmountKeyboard(this.amountNotEmpty, this.needCalculate, this.onInput) : super();
@@ -11,8 +11,8 @@ class AmountKeyboard extends StatelessWidget {
   static const String COMMA = ".";
 
   final ValueChanged<String> onInput;
-  bool needCalculate = false;
-  bool amountNotEmpty = false;
+  final bool needCalculate;
+  final bool amountNotEmpty;
 
   FlatButton _createTextAmountButton(String text) {
     return FlatButton(
