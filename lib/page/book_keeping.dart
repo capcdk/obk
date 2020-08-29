@@ -206,7 +206,6 @@ class _BillTypeChooserState extends State<BillTypeChooser> {
     var tabHeight = Global.screenWidth * 0.4053 * 0.263;
     var baseWidth = tabWidth * 2 + borderWidth * 2;
     var baseHeight = tabHeight + borderWidth * 2;
-    var rightTabOffset = tabWidth;
     return Container(
       margin: EdgeInsets.only(top: Global.screenHeight * 0.10),
       width: baseWidth,
@@ -219,7 +218,7 @@ class _BillTypeChooserState extends State<BillTypeChooser> {
 //        overflow: Overflow.visible,
         children: [
           AnimatedPositioned(
-              left: chooseIncome ? rightTabOffset : 0,
+              left: chooseIncome ? tabWidth : 0,
               duration: Duration(milliseconds: 350),
               curve: Curves.easeOutCubic,
               child: Container(
@@ -235,7 +234,7 @@ class _BillTypeChooserState extends State<BillTypeChooser> {
                 child: _createBillTypeButton(false),
               )),
           Positioned(
-              left: rightTabOffset,
+              left: tabWidth,
               child: SizedBox(
                 width: tabWidth,
                 height: tabHeight,
