@@ -106,6 +106,10 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
     }
   }
 
+  void onBillTypeChange(bool chooseIncome) {
+    this.chooseIncome = chooseIncome;
+  }
+
   String double2StandardAmount(double input) => str2StandardAmount(input.toString());
 
   String str2StandardAmount(String input) {
@@ -134,7 +138,7 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
       body: Column(
         children: [
           // TAB
-          BillTypeChooser(this.chooseIncome),
+          BillTypeChooser(onBillTypeChange),
           // 金额输入区
           Container(
             margin: EdgeInsets.only(top: 180),
@@ -180,43 +184,81 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
   }
 }
 
-// 账单模式切换
-class BillTypeChooser extends StatelessWidget {
-  BillTypeChooser(this.chooseIncome, {Key key}) : super(key: key);
+class BillTypeChooser extends StatefulWidget {
+  BillTypeChooser(this.onBillTypeChange, {Key key}) : super(key: key);
+  ValueChanged<bool> onBillTypeChange;
 
-  final bool chooseIncome;
+  @override
+  State<StatefulWidget> createState() => _BillTypeChooserState((onBillTypeChange));
+}
+
+// 账单模式切换
+class _BillTypeChooserState extends State<BillTypeChooser> {
+  _BillTypeChooserState(this.onBillTypeChange);
+
+  ValueChanged<bool> onBillTypeChange;
+  bool chooseIncome = false;
 
   @override
   Widget build(BuildContext context) {
+    var tabWidth = Global.screenWidth * 0.208;
+    var tabHeight = Global.screenWidth * 0.4053 * 0.263;
+    var baseWidth = Global.screenWidth * 0.208 * 2;
+    var baseHeight = Global.screenWidth * 0.41 * 0.263;
+    var rightTabOffset = baseWidth - tabWidth;
     return Container(
-      margin: EdgeInsets.only(top: Global.screenHeight * 0.09),
-      width: Global.screenWidth * 0.4053,
-      height: Global.screenWidth * 0.41 * 0.263,
+      margin: EdgeInsets.only(top: Global.screenHeight * 0.10),
+      width: baseWidth,
+      height: baseHeight,
       decoration: BoxDecoration(
         border: Border.all(color: const Color.fromRGBO(43, 146, 255, 0.3), width: 2),
-        borderRadius: BorderRadius.circular(60),
+        borderRadius: BorderRadius.circular(60.0),
       ),
       child: Stack(
+        overflow: Overflow.visible,
         children: [
-          Positioned(left: 0, child: _createBillTypeButton(false)),
-          Positioned(right: 0, child: _createBillTypeButton(true)),
+          AnimatedPositioned(
+              left: chooseIncome ? rightTabOffset : 0,
+              duration: Duration(milliseconds: 400),
+              curve: Curves.easeOutCubic,
+              child: Container(
+                width: tabWidth,
+                height: tabHeight,
+                decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(60.0)),
+              )),
+          Positioned(
+              left: 0,
+              child: SizedBox(
+                width: tabWidth,
+                height: tabHeight,
+                child: _createBillTypeButton(false),
+              )),
+          Positioned(
+              left: rightTabOffset,
+              child: SizedBox(
+                width: tabWidth,
+                height: tabHeight,
+                child: _createBillTypeButton(true),
+              )),
         ],
       ),
     );
   }
 
   Widget _createBillTypeButton(bool incomeButton) {
-    return SizedBox(
-      height: Global.screenWidth * 0.4053 * 0.263,
-      width: Global.screenWidth * 0.208,
-      child: FlatButton(
-        child: Text(incomeButton ? "收入" : "支出", style: TextStyle(fontSize: 27, fontWeight: FontWeight.w600)),
-        color: (incomeButton == chooseIncome) ? Colors.blue : Colors.transparent,
-        textColor: (incomeButton == chooseIncome) ? Colors.white : Colors.black,
-        highlightColor: Colors.blue[700],
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60.0)),
-        onPressed: (incomeButton == chooseIncome) ? () => {} : null,
-      ),
+    return FlatButton(
+      child: Text(incomeButton ? "收入" : "支出", style: TextStyle(fontSize: 27, fontWeight: FontWeight.w500)),
+      color: Colors.transparent,
+      textColor: (incomeButton == chooseIncome) ? Colors.white : Colors.black,
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+//      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60.0)),
+      onPressed: () {
+        setState(() {
+          this.chooseIncome = incomeButton;
+        });
+        onBillTypeChange(chooseIncome);
+      },
     );
   }
 }
