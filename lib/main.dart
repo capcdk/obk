@@ -50,10 +50,10 @@ class ObkHomePage extends StatelessWidget {
             children: [
               Container(
                 margin: EdgeInsets.only(top: screenHeight * 0.55, right: screenWidth * 0.08),
-                width: 190,
-                height: 90,
+                width: Global.screenWidth * 0.32,
+                height: Global.screenHeight * 0.07,
                 child: OutlineButton(
-                  child: Text("记收入", style: TextStyle(fontSize: 30)),
+                  child: Text("记收入", style: TextStyle(fontSize: 35)),
                   borderSide: new BorderSide(color: Colors.blue),
                   color: Colors.white,
                   textColor: Colors.blue,
@@ -63,10 +63,10 @@ class ObkHomePage extends StatelessWidget {
               ),
               Container(
                 margin: EdgeInsets.only(top: screenHeight * 0.55, left: screenWidth * 0.08),
-                width: 190,
-                height: 90,
+                width: Global.screenWidth * 0.32,
+                height: Global.screenHeight * 0.07,
                 child: FlatButton(
-                  child: Text("记支出", style: TextStyle(fontSize: 30)),
+                  child: Text("记支出", style: TextStyle(fontSize: 35)),
                   color: Colors.blue,
                   highlightColor: Colors.blue[700],
                   textColor: Colors.white,

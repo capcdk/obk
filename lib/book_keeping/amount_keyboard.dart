@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:obk/utills/global_value.dart';
 
-class AmountKeyboard extends StatefulWidget {
-  AmountKeyboard({Key key, @required this.onInput}) : super(key: key);
+class AmountKeyboard extends StatelessWidget {
+  AmountKeyboard(this.amountNotEmpty, this.needCalculate, this.onInput) : super();
 
   static const String BACKSPACE = "backspace";
   static const String CONFIRM = "confirm";
+  static const String PLUS = "+";
+  static const String MINUS = "—";
+  static const String COMMA = ".";
 
   final ValueChanged<String> onInput;
-
-  @override
-  State<StatefulWidget> createState() => _AmountKeyboardState(onInput);
-}
-
-class _AmountKeyboardState extends State<AmountKeyboard> {
-  _AmountKeyboardState(this.onInput) : super();
-
-  final ValueChanged<String> onInput;
+  bool needCalculate = false;
+  bool amountNotEmpty = false;
 
   FlatButton _createTextAmountButton(String text) {
     return FlatButton(
@@ -55,12 +51,12 @@ class _AmountKeyboardState extends State<AmountKeyboard> {
           _createTextAmountButton("4"),
           _createTextAmountButton("5"),
           _createTextAmountButton("6"),
-          _createTextAmountButton("+"),
+          _createTextAmountButton(AmountKeyboard.PLUS),
           _createTextAmountButton("1"),
           _createTextAmountButton("2"),
           _createTextAmountButton("3"),
-          _createTextAmountButton("—"),
-          _createTextAmountButton("."),
+          _createTextAmountButton(AmountKeyboard.MINUS),
+          _createTextAmountButton(AmountKeyboard.COMMA),
           _createTextAmountButton("0"),
           FlatButton(
               child: SizedBox(
@@ -73,8 +69,10 @@ class _AmountKeyboardState extends State<AmountKeyboard> {
           FlatButton(
               color: Colors.blue,
               textColor: Colors.white,
-              child: Text("确定", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400)),
-              onPressed: () => onInput(AmountKeyboard.CONFIRM))
+              disabledColor: const Color.fromRGBO(192, 223, 255, 1),
+              disabledTextColor: Colors.white,
+              child: Text(needCalculate ? "计算" : "确定", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400)),
+              onPressed: amountNotEmpty ? () => onInput(AmountKeyboard.CONFIRM) : null)
         ],
       );
     });

@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:obk/book_keeping/amount_keyboard.dart';
 import 'package:obk/book_keeping/category_slide_picker.dart';
 import 'package:obk/utills/global_value.dart';
+import 'package:obk/utills/toast_utils.dart';
 
 class BookKeepingPage extends StatefulWidget {
   BookKeepingPage({Key key}) : super(key: key);
@@ -13,29 +16,116 @@ class BookKeepingPage extends StatefulWidget {
 // 记账输入页
 class _BookKeepingPageState extends State<BookKeepingPage> {
   final TextEditingController _amountController = TextEditingController();
+  bool needCalculate = false;
+  bool amountNotEmpty = false;
 
   void onAmountInput(String input) {
     if (input.isEmpty) {
       return;
     }
 
-    var oldLength = _amountController.text.length;
+    var oldText = _amountController.text;
+    var oldLength = oldText.length;
+    bool textChange = false;
     if (AmountKeyboard.CONFIRM == input) {
-      // 计算金额
+      if (oldLength > 0) {
+        if (needCalculate) {
+          // 计算金额
+          List<double> nums = new List();
+          String num = "";
+          double positive = 1;
+          for (var value in oldText.characters) {
+            if (AmountKeyboard.PLUS == value) {
+              nums.add(positive * double.parse(num));
+              num = "";
+              positive = 1;
+            } else if (AmountKeyboard.MINUS == value) {
+              nums.add(positive * double.parse(num));
+              num = "";
+              positive = -1;
+            } else {
+              num += value;
+            }
+          }
+          if (num.isNotEmpty) {
+            nums.add(positive * double.parse(num));
+          }
+          if (nums.isNotEmpty) {
+            double result = 0;
+            nums.forEach((e) => result += e);
+            _amountController.text = double2StandardAmount(result);
+            textChange = true;
+          }
+        } else {
+          // TODO 添加账单
+          double amount = double.parse(oldText);
+          if (amount < 0) {
+            ToastUtils.showBasicToast("账单不支持记录负数");
+          } else {
+            _amountController.text = str2StandardAmount(oldText);
+            // 游标置最后
+            _amountController.selection =
+                new TextSelection(baseOffset: _amountController.text.length, extentOffset: _amountController.text.length);
+            return;
+          }
+        }
+      }
     } else if (AmountKeyboard.BACKSPACE == input) {
       // 退格
       if (oldLength > 0) {
-        _amountController.text = _amountController.text.substring(0, oldLength - 1);
+        _amountController.text = oldText.substring(0, oldLength - 1);
+        textChange = true;
       }
     } else {
-      // 追加显示
-      _amountController.text += input;
+      if (isSpecialSign(input) &&
+          (oldLength == 0 ||
+              isSpecialSign(oldText.substring(oldLength - 1, oldLength)) ||
+              (AmountKeyboard.COMMA == input && isConsequentComma(oldText)))) {
+        // 错误提示
+        ToastUtils.showBasicToast("请按正确格式输入");
+      } else {
+        // 追加显示
+        _amountController.text += input;
+        textChange = true;
+      }
     }
     var newLength = _amountController.text.length;
-    if (newLength != oldLength) {
+    if (textChange) {
+      // 游标置最后
       _amountController.selection = new TextSelection(baseOffset: newLength, extentOffset: newLength);
+      // 更新键盘区样式
+      var newAmountNotEmpty = newLength > 0;
+      var newNeedCalculate = _amountController.text.contains(AmountKeyboard.PLUS) || _amountController.text.contains(AmountKeyboard.MINUS);
+      if (newNeedCalculate != this.needCalculate || newAmountNotEmpty != this.amountNotEmpty) {
+        setState(() {
+          this.needCalculate = newNeedCalculate;
+          this.amountNotEmpty = newAmountNotEmpty;
+        });
+      }
     }
   }
+
+  String double2StandardAmount(double input) => str2StandardAmount(input.toString());
+
+  String str2StandardAmount(String input) {
+    var commaIndex = input.lastIndexOf(AmountKeyboard.COMMA);
+    if (commaIndex > 0) {
+      return input.substring(0, min(input.length, commaIndex + 3));
+    }
+    return input;
+  }
+
+  /// 是否距离最近一个逗点之间无其他符号
+  bool isConsequentComma(String input) {
+    var lastCommaIndex = input.lastIndexOf(AmountKeyboard.COMMA);
+    return lastCommaIndex >= 0 &&
+        input.indexOf(AmountKeyboard.PLUS, lastCommaIndex) < 0 &&
+        input.indexOf(AmountKeyboard.MINUS, lastCommaIndex) < 0;
+  }
+
+  bool isCalSign(String input) => AmountKeyboard.MINUS == input || AmountKeyboard.PLUS == input;
+
+  bool isSpecialSign(String input) => AmountKeyboard.MINUS == input || AmountKeyboard.PLUS == input || AmountKeyboard.COMMA == input;
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +163,7 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
             child: Container(alignment: Alignment.centerLeft, child: _remarkTextField()),
           ),
           // 金额键盘
-          Expanded(
-            child: AmountKeyboard(onInput: onAmountInput),
-          )
+          Expanded(child: AmountKeyboard(amountNotEmpty, needCalculate, onAmountInput))
         ],
       ),
     );
