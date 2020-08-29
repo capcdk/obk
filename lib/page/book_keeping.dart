@@ -201,25 +201,26 @@ class _BillTypeChooserState extends State<BillTypeChooser> {
 
   @override
   Widget build(BuildContext context) {
+    double borderWidth = 2;
     var tabWidth = Global.screenWidth * 0.208;
     var tabHeight = Global.screenWidth * 0.4053 * 0.263;
-    var baseWidth = Global.screenWidth * 0.208 * 2;
-    var baseHeight = Global.screenWidth * 0.41 * 0.263;
-    var rightTabOffset = baseWidth - tabWidth;
+    var baseWidth = tabWidth * 2 + borderWidth * 2;
+    var baseHeight = tabHeight + borderWidth * 2;
+    var rightTabOffset = tabWidth;
     return Container(
       margin: EdgeInsets.only(top: Global.screenHeight * 0.10),
       width: baseWidth,
       height: baseHeight,
       decoration: BoxDecoration(
-        border: Border.all(color: const Color.fromRGBO(43, 146, 255, 0.3), width: 2),
+        border: Border.all(color: const Color.fromRGBO(43, 146, 255, 0.3), width: borderWidth),
         borderRadius: BorderRadius.circular(60.0),
       ),
       child: Stack(
-        overflow: Overflow.visible,
+//        overflow: Overflow.visible,
         children: [
           AnimatedPositioned(
               left: chooseIncome ? rightTabOffset : 0,
-              duration: Duration(milliseconds: 400),
+              duration: Duration(milliseconds: 350),
               curve: Curves.easeOutCubic,
               child: Container(
                 width: tabWidth,
@@ -252,7 +253,7 @@ class _BillTypeChooserState extends State<BillTypeChooser> {
       textColor: (incomeButton == chooseIncome) ? Colors.white : Colors.black,
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
-//      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60.0)),
+//      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60.0), side: BorderSide(color: Colors.yellow, width: 3)),
       onPressed: () {
         setState(() {
           this.chooseIncome = incomeButton;
