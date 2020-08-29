@@ -219,7 +219,7 @@ class _BillTypeChooserState extends State<BillTypeChooser> {
         children: [
           AnimatedPositioned(
               left: chooseIncome ? tabWidth : 0,
-              duration: Duration(milliseconds: 350),
+              duration: Duration(milliseconds: 250),
               curve: Curves.easeOutCubic,
               child: Container(
                 width: tabWidth,
