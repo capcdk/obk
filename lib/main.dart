@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:obk/page/bill_list_page.dart';
 import 'file:///D:/code/github/obk/lib/page/book_keeping.dart';
 import 'package:obk/utils/global_value.dart';
 
@@ -21,7 +22,11 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       //注册路由表
-      routes: {"/": (context) => ObkHomePage(), "book_keeping": (context) => BookKeepingPage()},
+      routes: {
+        "/": (context) => ObkHomePage(),
+        "/book_keeping": (context) => BookKeepingPage(),
+        "/bill_list": (context) => BillListPage(),
+      },
     );
     return app;
   }
@@ -58,7 +63,9 @@ class ObkHomePage extends StatelessWidget {
                   color: Colors.white,
                   textColor: Colors.blue,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60.0)),
-                  onPressed: () => Navigator.pushNamed(context, "book_keeping"),
+                  // TODO 调试时使用此路由，之后改回去
+                  onPressed: () => Navigator.pushNamed(context, "/bill_list"),
+//                  onPressed: () => Navigator.pushNamed(context, "/book_keeping", arguments: true),
                 ),
               ),
               Container(
@@ -71,7 +78,7 @@ class ObkHomePage extends StatelessWidget {
                   highlightColor: Colors.blue[700],
                   textColor: Colors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(60.0)),
-                  onPressed: () => Navigator.pushNamed(context, "book_keeping"),
+                  onPressed: () => Navigator.pushNamed(context, "/book_keeping", arguments: false),
                 ),
               )
             ],

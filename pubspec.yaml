@@ -49,6 +49,7 @@ flutter:
   assets:
     - asserts/images/
     - asserts/images/backspace.png
+    - asserts/images/menu.png
   #    - images/a_dot_burr.jpeg
   #    - images/a_dot_ham.jpeg
 

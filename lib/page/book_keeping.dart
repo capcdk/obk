@@ -16,6 +16,7 @@ class BookKeepingPage extends StatefulWidget {
 // 记账输入页
 class _BookKeepingPageState extends State<BookKeepingPage> {
   final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _remarkController = TextEditingController();
   bool needCalculate = false;
   bool amountNotEmpty = false;
   bool chooseIncome = false;
@@ -28,6 +29,7 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
     var oldText = _amountController.text;
     var oldLength = oldText.length;
     bool textChange = false;
+    // 金额确认输入
     if (AmountKeyboard.CONFIRM == input) {
       if (oldLength > 0) {
         if (needCalculate) {
@@ -58,7 +60,7 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
             textChange = true;
           }
         } else {
-          // TODO 添加账单
+          // 添加账单
           double amount = double.parse(oldText);
           if (amount < 0) {
             ToastUtils.showBasicToast("账单不支持记录负数");
@@ -67,6 +69,8 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
             // 游标置最后
             _amountController.selection =
                 new TextSelection(baseOffset: _amountController.text.length, extentOffset: _amountController.text.length);
+            // 记录账单
+            createBill();
             return;
           }
         }
@@ -106,6 +110,18 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
     }
   }
 
+  /**
+   * TODO 记录账单
+   */
+  void createBill() {
+    // this.chooseIncome 账单类型
+    // _amountController.text 账单金额
+    print(this.chooseIncome.toString() + ", " + _amountController.text + ", " + _remarkController.text);
+  }
+
+  /**
+   * 变更账单类型
+   */
   void onBillTypeChange(bool chooseIncome) {
     this.chooseIncome = chooseIncome;
   }
@@ -134,11 +150,13 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
 
   @override
   Widget build(BuildContext context) {
+    //获取路由参数
+    this.chooseIncome = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: Column(
         children: [
           // TAB
-          BillTypeChooser(onBillTypeChange),
+          BillTypeChooser(chooseIncome, onBillTypeChange),
           // 金额输入区
           Container(
             margin: EdgeInsets.only(top: 180),
@@ -175,6 +193,7 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
       Text("备注：", style: TextStyle(fontSize: 28, fontWeight: FontWeight.w100)),
       Expanded(
           child: TextField(
+              controller: _remarkController,
               style: TextStyle(fontSize: 28),
               cursorWidth: 3,
               maxLines: 1,
@@ -185,16 +204,17 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
 }
 
 class BillTypeChooser extends StatefulWidget {
-  BillTypeChooser(this.onBillTypeChange, {Key key}) : super(key: key);
+  BillTypeChooser(this.chooseIncomeInit, this.onBillTypeChange, {Key key}) : super(key: key);
+  bool chooseIncomeInit;
   ValueChanged<bool> onBillTypeChange;
 
   @override
-  State<StatefulWidget> createState() => _BillTypeChooserState((onBillTypeChange));
+  State<StatefulWidget> createState() => _BillTypeChooserState(chooseIncomeInit, onBillTypeChange);
 }
 
 // 账单模式切换
 class _BillTypeChooserState extends State<BillTypeChooser> {
-  _BillTypeChooserState(this.onBillTypeChange);
+  _BillTypeChooserState(this.chooseIncome, this.onBillTypeChange);
 
   ValueChanged<bool> onBillTypeChange;
   bool chooseIncome = false;
