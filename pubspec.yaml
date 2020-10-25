@@ -50,6 +50,7 @@ flutter:
     - asserts/images/
     - asserts/images/backspace.png
     - asserts/images/menu.png
+    - asserts/images/bill_list_blank.png
   #    - images/a_dot_burr.jpeg
   #    - images/a_dot_ham.jpeg
 

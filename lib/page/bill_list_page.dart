@@ -18,77 +18,112 @@ class _BillListPageState extends State<BillListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: Global.screenWidth,
-        height: (Global.screenHeight * 0.2) + Global.topPadding,
-        color: Colors.blue,
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: Global.topPadding + Global.screenHeight * 0.02),
-              width: Global.screenWidth,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    child: SizedBox(
-                      child: Text("快记账", style: TextStyle(color: Colors.white, fontSize: 38, fontWeight: FontWeight.w500)),
-                    ),
-                  ),
-                  Positioned(
-                      right: Global.screenWidth * 0.03,
+        body: Column(
+      children: [
+        Container(
+          width: Global.screenWidth,
+          height: (Global.screenHeight * 0.2) + Global.topPadding,
+          color: Colors.blue,
+          child: Column(
+            children: [
+              // 标题、菜单按钮
+              Container(
+                margin: EdgeInsets.only(top: Global.topPadding + Global.screenHeight * 0.02),
+                width: Global.screenWidth,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
                       child: SizedBox(
-                        width: Global.screenWidth * 0.11,
-                        child: FlatButton(
-                            onPressed: () => null,
-                            child: Image(
-                              image: AssetImage("asserts/images/menu.png"),
-                              fit: BoxFit.fitWidth,
-                            )),
-                      ))
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: Global.screenHeight * 0.04),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.only(left: Global.screenWidth * 0.05),
-                      child: _dataTextField("收入", monthIncome.toString()),
+                        child: Text("快记账", style: TextStyle(color: Colors.white, fontSize: 38, fontWeight: FontWeight.w500)),
+                      ),
                     ),
-                  ),
-                  Expanded(
+                    Positioned(
+                        right: Global.screenWidth * 0.03,
+                        child: SizedBox(
+                          width: Global.screenWidth * 0.11,
+                          child: FlatButton(
+                              onPressed: () => null,
+                              child: Image(
+                                image: AssetImage("asserts/images/menu.png"),
+                                fit: BoxFit.fitWidth,
+                              )),
+                        ))
+                  ],
+                ),
+              ),
+              // 月收入、支出
+              Container(
+                margin: EdgeInsets.only(top: Global.screenHeight * 0.04),
+                child: Row(
+                  children: [
+                    Expanded(
                       flex: 1,
                       child: Container(
                         padding: EdgeInsets.only(left: Global.screenWidth * 0.05),
-                        child: _dataTextField("支出", monthExpenses.toString()),
-                      )),
-                  Container(
-                    height: Global.screenHeight * 0.0435,
-                    alignment: Alignment.center,
-                    child: VerticalDivider(
-                      width: 1,
-                      thickness: 1,
-                      color: const Color.fromRGBO(114, 183, 255, 1),
+                        child: _dataTextField("收入", monthIncome.toString()),
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Align(
+                    Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: EdgeInsets.only(left: Global.screenWidth * 0.05),
+                          child: _dataTextField("支出", monthExpenses.toString()),
+                        )),
+                    Container(
+                      height: Global.screenHeight * 0.0435,
                       alignment: Alignment.center,
-                      child: _dataTextField(selectYear.toString() + "年", selectMonth.toString() + "月"),
+                      child: VerticalDivider(
+                        width: 1,
+                        thickness: 1,
+                        color: const Color.fromRGBO(114, 183, 255, 1),
+                      ),
                     ),
-                  )
-                ],
-              ),
-            )
-          ],
+                    Expanded(
+                      flex: 1,
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: _dataTextField(selectYear.toString() + "年", selectMonth.toString() + "月"),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+        Container(
+          margin: EdgeInsets.only(top: Global.screenHeight * 0.17),
+          width: Global.screenWidth * 0.56,
+          child: Image(
+            image: AssetImage("asserts/images/bill_list_blank.png"),
+            fit: BoxFit.fitWidth,
+          ),
+        ),
+        Container(
+          child: Text(
+            "暂无数据",
+            style: TextStyle(fontSize: 32, color: const Color.fromRGBO(170, 170, 170, 1)),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: Global.screenHeight * 0.2),
+          width: Global.screenWidth * 0.19,
+          height: Global.screenWidth * 0.19,
+          child: RaisedButton(
+            color: const Color.fromRGBO(43, 146, 255, 1),
+            elevation: 4,
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 80,
+            ),
+            shape: CircleBorder(),
+            onPressed: () {},
+          ),
+        )
+      ],
+    ));
   }
 
   Widget _dataTextField(String title, String data) {
