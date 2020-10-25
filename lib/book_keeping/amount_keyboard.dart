@@ -47,7 +47,10 @@ class AmountKeyboard extends StatelessWidget {
           FlatButton(
               textColor: Colors.black,
               child: Text(_getTodayDate(), style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400)),
-              onPressed: () {}),
+              onPressed: () {
+                var now = DateTime.now();
+                showDatePicker(context: context, initialDate: now, firstDate: DateTime(now.year - 1), lastDate: DateTime(now.year + 1));
+              }),
           _createTextAmountButton("4"),
           _createTextAmountButton("5"),
           _createTextAmountButton("6"),
