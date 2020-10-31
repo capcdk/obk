@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:obk/icons/my_icons.dart';
 import 'package:obk/utils/global_value.dart';
 
 class BillListPage extends StatefulWidget {
@@ -114,9 +115,9 @@ class _BillListPageState extends State<BillListPage> {
             color: const Color.fromRGBO(43, 146, 255, 1),
             elevation: 4,
             child: Icon(
-              Icons.add,
+              MyIcons.add,
               color: Colors.white,
-              size: 80,
+              size: 60,
             ),
             shape: CircleBorder(),
             onPressed: () {},
