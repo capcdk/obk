@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:obk/icons/my_icons.dart';
 import 'package:obk/utils/global_value.dart';
@@ -82,9 +83,27 @@ class _BillListPageState extends State<BillListPage> {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: _dataTextField(selectYear.toString() + "年", selectMonth.toString() + "月"),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(selectYear.toString() + "年",
+                              style: TextStyle(fontSize: 30, color: const Color.fromRGBO(177, 215, 255, 1), fontWeight: FontWeight.w400)),
+                          Container(
+                            margin: EdgeInsets.only(top: Global.screenHeight * 0.02),
+                            child: FlatButton(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                // mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(selectMonth.toString() + "月",
+                                      style: TextStyle(fontSize: 33, color: Colors.white, fontWeight: FontWeight.w500)),
+                                  Icon(Icons.arrow_drop_down, color: Colors.white, size: 40)
+                                ],
+                              ),
+                              onPressed: () {},
+                            ),
+                          )
+                        ],
                       ),
                     )
                   ],

@@ -5,8 +5,8 @@ import 'file:///D:/code/github/obk/lib/page/book_keeping.dart';
 import 'package:obk/utils/global_value.dart';
 
 void main() {
-//  debugPaintSizeEnabled = true;
-//  debugPaintPointersEnabled = true;
+ // debugPaintSizeEnabled = true;
+ // debugPaintPointersEnabled = true;
   runApp(MyApp());
 }
 
