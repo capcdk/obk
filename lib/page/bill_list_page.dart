@@ -91,6 +91,8 @@ class _BillListPageState extends State<BillListPage> {
                           Container(
                             margin: EdgeInsets.only(top: Global.screenHeight * 0.02),
                             child: FlatButton(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 // mainAxisSize: MainAxisSize.min,
