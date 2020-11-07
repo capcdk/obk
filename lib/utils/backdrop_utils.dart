@@ -3,15 +3,53 @@ import 'package:obk/utils/global_value.dart';
 
 class BackdropUtils {
   static Future<void> select() async {
-    int i = await showDialog<int>(
+    int i = await showAnimationDialog<int>(
         context: Global.appContext,
         builder: (BuildContext context) {
-          return MonthSelector(insetPadding: const EdgeInsets.all(0.0));
+          return const MonthSelector(insetPadding: const EdgeInsets.all(0.0));
         });
 
     if (i != null) {
       print("选择了：${i == 1 ? "中文简体" : "美国英语"}");
     }
+  }
+
+  static Future<T> showAnimationDialog<T>(
+      {@required BuildContext context,
+      bool barrierDismissible = true,
+      @Deprecated('') Widget child,
+      WidgetBuilder builder,
+      bool useRootNavigator = true,
+      RouteSettings routeSettings}) {
+    assert(child == null || builder == null);
+    assert(useRootNavigator != null);
+    assert(debugCheckHasMaterialLocalizations(context));
+
+    final ThemeData theme = Theme.of(context, shadowThemeOnly: true);
+    return showGeneralDialog(
+      context: context,
+      pageBuilder: (BuildContext buildContext, Animation<double> animation, Animation<double> secondaryAnimation) {
+        final Widget pageChild = child ?? Builder(builder: builder);
+        return SafeArea(
+          child: Builder(builder: (BuildContext context) {
+            return theme != null ? Theme(data: theme, child: pageChild) : pageChild;
+          }),
+        );
+      },
+      barrierDismissible: barrierDismissible,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 500),
+      transitionBuilder: (context, animation1, animation2, child) {
+        return SlideTransition(
+          position: Tween<Offset>(begin: Offset(0.0, 2.0), end: Offset(0.0, 0.0))
+              .animate(CurvedAnimation(parent: animation1, curve: Curves.fastOutSlowIn)),
+          child: child,
+        );
+      },
+      useRootNavigator: useRootNavigator,
+      routeSettings: routeSettings,
+    );
   }
 }
 
@@ -43,8 +81,8 @@ class MonthSelector extends Dialog {
 
   @override
   Widget build(BuildContext context) {
-    var alertHeight = Global.screenHeight * 0.3268;
-    var listHeight = Global.screenHeight * 0.28;
+    var alertHeight = Global.screenHeight * 0.31;
+    var listHeight = Global.screenHeight * 0.24;
 
     final DialogTheme dialogTheme = DialogTheme.of(context);
     final EdgeInsets effectivePadding = MediaQuery.of(context).viewInsets + (insetPadding ?? const EdgeInsets.all(0.0));
@@ -71,28 +109,33 @@ class MonthSelector extends Dialog {
               child: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.only(top: Global.screenHeight * 0.01),
+                    padding: EdgeInsets.only(
+                        top: Global.screenHeight * 0.025, left: Global.screenWidth * 0.05, right: Global.screenWidth * 0.05),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
-                            child: FlatButton(
-                                highlightColor: Colors.transparent,
-                                splashColor: Colors.transparent,
-                                child: Text(
-                                  "取消",
-                                  style: TextStyle(fontSize: 30, color: const Color.fromRGBO(170, 170, 170, 1)),
-                                ),
-                                onPressed: () {})),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: FlatButton(
+                                    highlightColor: Colors.transparent,
+                                    splashColor: Colors.transparent,
+                                    child: Text(
+                                      "取消",
+                                      style: TextStyle(fontSize: 36, color: const Color.fromRGBO(170, 170, 170, 1)),
+                                    ),
+                                    onPressed: () {}))),
                         Expanded(
                             child: Text("选择日期",
-                                textAlign: TextAlign.center, style: TextStyle(fontSize: 30, color: const Color.fromRGBO(51, 51, 51, 1)))),
+                                textAlign: TextAlign.center, style: TextStyle(fontSize: 36, color: const Color.fromRGBO(51, 51, 51, 1)))),
                         Expanded(
-                            child: FlatButton(
-                                highlightColor: Colors.transparent,
-                                splashColor: Colors.transparent,
-                                child: Text("确定", style: TextStyle(fontSize: 30, color: const Color.fromRGBO(43, 146, 255, 1))),
-                                onPressed: () {})),
+                            child: Align(
+                                alignment: Alignment.centerRight,
+                                child: FlatButton(
+                                    highlightColor: Colors.transparent,
+                                    splashColor: Colors.transparent,
+                                    child: Text("确定", style: TextStyle(fontSize: 36, color: const Color.fromRGBO(43, 146, 255, 1))),
+                                    onPressed: () {}))),
                       ],
                     ),
                   ),
