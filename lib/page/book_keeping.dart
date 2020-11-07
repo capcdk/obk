@@ -2,7 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:obk/book_keeping/amount_keyboard.dart';
-import 'package:obk/book_keeping/category_slide_picker.dart';
+import 'package:obk/custom_widget/slide_picker.dart';
+import 'file:///D:/code/github/obk/lib/custom_widget/slide_picker_item.dart';
 import 'package:obk/utils/global_value.dart';
 import 'package:obk/utils/toast_utils.dart';
 
@@ -20,6 +21,17 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
   bool needCalculate = false;
   bool amountNotEmpty = false;
   bool chooseIncome = false;
+
+  List<SlidePickerItem> _categoryList = [
+    SlidePickerItem(name: "其他"),
+    SlidePickerItem(name: "日用"),
+    SlidePickerItem(name: "餐饮"),
+    SlidePickerItem(name: "贷款"),
+    SlidePickerItem(name: "交通"),
+    SlidePickerItem(name: "娱乐"),
+    SlidePickerItem(name: "家用"),
+    SlidePickerItem(name: "消费")
+  ];
 
   void onAmountInput(String input) {
     if (input.isEmpty) {
@@ -170,7 +182,14 @@ class _BookKeepingPageState extends State<BookKeepingPage> {
           Container(
             margin: EdgeInsets.only(top: 280),
             height: 120,
-            child: CategorySlidePicker(),
+            child: SlidePicker(
+              itemList: _categoryList,
+              emptyItemPadding: 3,
+              pickedColor: Colors.blue,
+              unpickedColor: Colors.white,
+              defaultSelectIndex: 2,
+              shape: const CircleBorder(side: BorderSide(color: Colors.blue)),
+            ),
           ),
           // 备注输入区
           Container(

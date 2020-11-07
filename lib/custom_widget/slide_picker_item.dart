@@ -1,4 +1,4 @@
-class Category {
+class SlidePickerItem {
   final String name;
   bool picked;
   double padding = unselectedPadding;
@@ -13,7 +13,7 @@ class Category {
   static const scaleFontSize = selectFontSize - unselectedFontSize;
   static const scalePadding = unselectedPadding - selectPadding;
 
-  Category({this.name = "", this.picked = false});
+  SlidePickerItem({this.name = "", this.picked = false});
 
   void setPickStatus(bool picked) {
     this.picked = picked;
