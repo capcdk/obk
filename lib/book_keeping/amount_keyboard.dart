@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:obk/utils/backdrop_utils.dart';
 import 'package:obk/utils/global_value.dart';
 
 class AmountKeyboard extends StatelessWidget {
@@ -49,7 +50,8 @@ class AmountKeyboard extends StatelessWidget {
               child: Text(_getTodayDate(), style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400)),
               onPressed: () {
                 var now = DateTime.now();
-                showDatePicker(context: context, initialDate: now, firstDate: DateTime(now.year - 1), lastDate: DateTime(now.year + 1));
+                BackdropUtils.select();
+                // showDatePicker(context: context, initialDate: now, firstDate: DateTime(now.year - 1), lastDate: DateTime(now.year + 1));
               }),
           _createTextAmountButton("4"),
           _createTextAmountButton("5"),
